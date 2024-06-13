@@ -14,6 +14,7 @@ func main() {
 	fmt.Printf("Welcome to our %v booking application.\n", conference_name)
 	fmt.Printf("We have total of %v tickets and %v are still available.\n", conferenceTickets, remainingTickets)
 	fmt.Println("Get your tickets to attend.")
+
 	for {
 		var firstName string
 		var lastName string
@@ -21,26 +22,26 @@ func main() {
 		var userTickets uint
 
 		fmt.Println("Enter your first name: ")
-		fmt.Scan(&firstName)
+		fmt.Scanln(&firstName)
 
 		fmt.Println("Enter your last name: ")
-		fmt.Scan(&lastName)
+		fmt.Scanln(&lastName)
 
 		fmt.Println("Enter your email: ")
-		fmt.Scan(&email)
+		fmt.Scanln(&email)
 
 		fmt.Println("Enter number of tickets: ")
-		fmt.Scan(&userTickets)
+		fmt.Scanln(&userTickets)
 
-		if userTickets <= remainingTickets {
+		isValidName := len(firstName) >= 2 && len(lastName) >= 2
+		isValidEmail := strings.Contains(email, "@")
+		isValidTicketNumber := userTickets > 0 && userTickets <= remainingTickets
+
+		if isValidName && isValidEmail && isValidTicketNumber {
 
 			remainingTickets = remainingTickets - userTickets
 			bookings = append(bookings, firstName+" "+lastName)
 
-			fmt.Printf("The whole array: %v\n", bookings)
-			fmt.Printf("The first value: %v\n", bookings[0])
-			fmt.Printf("Slice type: %T \n", bookings)
-			fmt.Printf("Slice length: %v \n", len(bookings))
 			fmt.Printf("Thank you %v %v for booking %v tickets. You will recieve a confirmation email at %v. \n", firstName, lastName, userTickets, email)
 			fmt.Printf("%v tickets remaining for %v conferenceTickets.\n", remainingTickets, conferenceTickets)
 
@@ -49,6 +50,7 @@ func main() {
 				var names = strings.Fields(booking)
 				firstNames = append(firstNames, names[0])
 			}
+
 			fmt.Printf("The first names of bookings are: %v \n", firstNames)
 
 			if remainingTickets == 0 {
@@ -59,7 +61,7 @@ func main() {
 
 		} else {
 
-			fmt.Printf("We only have %v tickets remaining, so you can't book %v tickets.\n", remainingTickets, userTickets)
+			fmt.Println("Your input is invalid.")
 
 		}
 
