@@ -5,13 +5,16 @@ import (
 	"strings"
 )
 
-func main() {
-	var conference_name string = "Go Conference"
-	const conferenceTickets int = 50
-	var remainingTickets uint = 50
-	bookings := []string{}
+var conference_name string = "Go Conference"
 
-	greetUsers(conference_name, conferenceTickets, remainingTickets)
+const conferenceTickets int = 50
+
+var remainingTickets uint = 50
+var bookings = []string{}
+
+func main() {
+
+	greetUsers()
 
 	for {
 
@@ -21,9 +24,9 @@ func main() {
 
 		if isValidName && isValidEmail && isValidTicketNumber {
 
-			bookTicket(remainingTickets, userTickets, bookings, firstName, lastName, email, conference_name)
+			bookTicket(userTickets, firstName, lastName, email)
 
-			firstNames := getFirstNames(bookings) //function
+			firstNames := getFirstNames() //function
 			fmt.Printf("The first names of bookings are: %v \n", firstNames)
 
 			if remainingTickets == 0 {
@@ -50,14 +53,14 @@ func main() {
 
 }
 
-func greetUsers(confName string, confTickets int, remainingTickets uint) {
-	fmt.Printf("Welcome to our %v booking application.\n", confName)
-	fmt.Printf("conferenceName is %T, conferenceTickets is %T, remainingTickets is %T. \n", confName, confTickets, remainingTickets)
+func greetUsers() {
+	fmt.Printf("Welcome to our %v booking application.\n", conference_name)
+	fmt.Printf("conferenceName is %T, conferenceTickets is %T, remainingTickets is %T. \n", conference_name, conferenceTickets, remainingTickets)
 
-	fmt.Printf("We have total of %v tickets and %v are still available.\n", confTickets, remainingTickets)
+	fmt.Printf("We have total of %v tickets and %v are still available.\n", conferenceTickets, remainingTickets)
 }
 
-func getFirstNames(bookings []string) []string {
+func getFirstNames() []string {
 	firstNames := []string{}
 	for _, booking := range bookings {
 		var names = strings.Fields(booking)
@@ -97,10 +100,10 @@ func getUserInput() (string, string, string, uint) {
 	return firstName, lastName, email, userTickets
 }
 
-func bookTicket(remainingTickets uint, userTickets uint, bookings []string, firstName string, lastName string, email string, confName string) {
+func bookTicket(userTickets uint, firstName string, lastName string, email string) {
 	remainingTickets = remainingTickets - userTickets
 	bookings = append(bookings, firstName+" "+lastName)
 
 	fmt.Printf("Thank you %v %v for booking %v tickets. You will recieve a confirmation email at %v. \n", firstName, lastName, userTickets, email)
-	fmt.Printf("%v tickets remaining for %v conferenceName.\n This is list %v", remainingTickets, confName, bookings)
+	fmt.Printf("%v tickets remaining for %v.\n", remainingTickets, conference_name)
 }
