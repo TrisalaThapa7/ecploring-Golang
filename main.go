@@ -1,9 +1,8 @@
 package main
 
 import (
-	"booking_app/helper"
 	"fmt"
-	"strings"
+	"strconv"
 )
 
 var conference_name string = "Go Conference"
@@ -11,7 +10,7 @@ var conference_name string = "Go Conference"
 const conferenceTickets int = 50
 
 var remainingTickets uint = 50
-var bookings = []string{}
+var bookings = make([]map[string]string, 0) //creating an empty slice of maps/creating empty list of maps
 
 func main() {
 
@@ -21,7 +20,7 @@ func main() {
 
 		firstName, lastName, email, userTickets := getUserInput()
 
-		isValidName, isValidEmail, isValidTicketNumber := helper.ValidateUserInput(firstName, lastName, email, userTickets, remainingTickets)
+		isValidName, isValidEmail, isValidTicketNumber := validateUserInput(firstName, lastName, email, userTickets, remainingTickets)
 
 		if isValidName && isValidEmail && isValidTicketNumber {
 
@@ -64,8 +63,8 @@ func greetUsers() {
 func getFirstNames() []string {
 	firstNames := []string{}
 	for _, booking := range bookings {
-		var names = strings.Fields(booking)
-		firstNames = append(firstNames, names[0])
+
+		firstNames = append(firstNames, booking["firstNames"])
 	}
 
 	return firstNames
@@ -94,7 +93,20 @@ func getUserInput() (string, string, string, uint) {
 
 func bookTicket(userTickets uint, firstName string, lastName string, email string) {
 	remainingTickets = remainingTickets - userTickets
-	bookings = append(bookings, firstName+" "+lastName)
+
+	// create a map for a user
+	var userData = make(map[string]string) // can be of different type. however we have key string and value also string. // We cannot mix data type!!! // when we created a map we have a type of the map and we wrap it to make function and that creates an empty map.
+	// here creating an empty map.
+	userData["firstName"] = firstName
+	userData["lastName"] = lastName
+	userData["email"] = email
+	userData["numberOfTickets"] = strconv.FormatUint(uint64(userTickets), 10) // for userTickets: as it is uint data type, we have to convert uint into a string.
+
+	// FormatUnit function takes our uint value which maybe anything between 1 to 50 and formats it to a string as a decimal number. And 10 is for base 10 which represents decimal numbers.
+
+	bookings = append(bookings, userData)
+
+	fmt.Printf("List of bookings is %v \n", bookings)
 
 	fmt.Printf("Thank you %v %v for booking %v tickets. You will recieve a confirmation email at %v. \n", firstName, lastName, userTickets, email)
 	fmt.Printf("%v tickets remaining for %v.\n", remainingTickets, conference_name)
