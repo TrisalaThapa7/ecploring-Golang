@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 var conference_name string = "Go Conference"
 
@@ -118,6 +121,7 @@ func bookTicket(userTickets uint, firstName string, lastName string, email strin
 
 func sendTicket(userTickets uint, firstName string, lastName string, email string) {
 
+	time.Sleep(10 * time.Second)
 	var ticket = fmt.Sprintf("%v tickets for %v %v", userTickets, firstName, lastName)
 	fmt.Println("########")
 	fmt.Printf("Sending ticket: %v \n to email address %v", ticket, email)
